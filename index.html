@@ -155,6 +155,7 @@ img{display:block}
 .t-coffee .art{background:#0b6e4f;color:#f3efe6}
 .t-confetti .art{background:#ff7a59;color:#fff}
 .t-letter .art{background:#dfe9f5;color:#24456b}
+.t-night .art{background:linear-gradient(170deg,#1e1b4b,#3b2f6b);color:#fde68a}
 .t-pink .art{background:#ffd6e5;color:#c2185b}
 
 /* 모달/시트/토스트 */
@@ -257,33 +258,31 @@ const PEOPLE = {
 };
 
 const GIFTS = [
-  { id:'g1', from:'byungchul', time:'00:00', theme:'cake',
-    brand:'교촌치킨', name:'허니콤보 + 콜라 1.25L', img:'images/gift-kyochon.jpg', emoji:'🍗', tint:'#fff1d6',
-    art:{ ttl:'HAPPY<br>BIRTHDAY', sub:'생일 축하해!', deco:'cake' },
-    msgs:['규상아 생일 축하한다 니 데려온 지 13년이다 씨발 세월 존나 빠르네. 닭 먹고 힘내서 다음 달 실적 빵꾸 내지 마라. 그리고 그 여자애한테 잘해라 형이 다 안다 ㅋㅋ',
-          '아 그리고 콘돔은 니가 사라 그건 형이 못 사준다 쪽팔려서.'] },
-  { id:'g2', from:'mikyung', time:'00:01', theme:'plain',
-    brand:'조 말론 런던', name:'우드 세이지 앤 씨 솔트 바디 앤 핸드 워시 250ml', img:'images/gift-jomalone.jpg', emoji:'🧴', tint:'#f1ece4',
-    art:{ ttl:'Happy Birthday', sub:'', deco:'none' },
-    msgs:['피 냄새 좀 씻고 다녀. 생일 축하해, 규상아.'] },
-  { id:'g3', from:'jinho', time:'00:04', theme:'party',
-    brand:'다이소', name:'모바일 상품권 5,000원', img:'images/gift-daiso.jpg', emoji:'🎫', tint:'#ffe4e6', amount:'5,000원',
-    art:{ ttl:'생일 축하해<br>친구야 🥳', sub:'(진심 아님)', deco:'balloon' },
-    msgs:['수면양말이랑 미끄럼 방지 슬리퍼 또 사라 ㅎㅎ 우리 규상이 이렇게 다정한 남자인 줄 진짜 몰랐어 감동받아서 눈물 남. 생축 친구야. 근데 하나 씨한테 너 코 고는지 아직 대답 못 들음.'] },
-  { id:'g4', from:'jinho', time:'00:09', theme:'coffee',
+  { id:'g1', from:'jinho', time:'00:00', theme:'party',
+    brand:'건강식품', name:'탈모 예방 검은콩 두유 세트', img:'images/gift-blackbean.jpg', emoji:'🥛', tint:'#f1ede6',
+    art:{ ttl:'HAPPY<br>BIRTHDAY 🎉', sub:'', deco:'balloon' },
+    msgs:['우리 규상이 형님 연세가 연세인지라 머리 빠지시면 안 되죠잉. 만수무강하십쇼.🎉'] },
+  { id:'g2', from:'jinho', time:'00:06', theme:'coffee',
     brand:'스타벅스', name:'카페 아메리카노 T 2잔', img:'images/gift-starbucks.jpg', emoji:'☕', tint:'#dcefe6',
-    art:{ ttl:'COFFEE<br>FOR TWO', sub:'둘이 같이', deco:'coffee' },
+    art:{ ttl:'COFFEE<br>FOR TWO', sub:'', deco:'coffee' },
     msgs:['하나 씨랑 같이 마셔. 이건 진심.'] },
-  { id:'g5', from:'dongsu', time:'01:47', theme:'confetti',
-    brand:'배달의민족', name:'모바일 상품권 30,000원', img:'images/gift-baemin.jpg', emoji:'🛵', tint:'#d5f5f2', amount:'30,000원',
+  { id:'g3', from:'byungchul', time:'00:02', theme:'cake',
+    brand:'정관장', name:'홍삼정 에브리타임', img:'images/gift-jungkwanjang.jpg', emoji:'🌱', tint:'#fbe3e0',
+    art:{ ttl:'HAPPY<br>BIRTHDAY', sub:'생일 축하해!', deco:'cake' },
+    msgs:['새끼야, 좆 빠지게 일하려면 몸뚱이 챙겨라. 밤일할 때도 필요할 거고ㅋㅋㅋㅋ'] },
+  { id:'g4', from:'jiyeon', time:'00:15', theme:'night',
+    brand:'리빙', name:'고급 무드등 세트', img:'images/gift-moodlight.jpg', emoji:'💡', tint:'#e0e7ff',
+    art:{ ttl:'Happy Birthday', sub:'', deco:'night' },
+    msgs:['하나 씨랑 좋은 밤 보내세요.'] },
+  { id:'g5', from:'dongsu', time:'00:31', theme:'confetti',
+    brand:'배달의민족', name:'모바일 상품권 50,000원', img:'images/gift-baemin.jpg', emoji:'🛵', tint:'#d5f5f2', amount:'50,000원',
     art:{ ttl:'형님!!!<br>생신 축하드립니다!!!', sub:'', deco:'confetti' },
     voice:{ src:'audio/dongsu-song.mp3', len:167, title:'생일축하노래 (트로트 ver.) 🎤' },
-    msgs:['형님!!!!!!!!! 생신 축하드립니다!!!!!!! 새벽에 차 빼드린 거 비밀로 할게요!!!!! 근데 형님 다음엔 번호판 확인 같은 건 낮에 시켜주십쇼 저 졸려 뒤지는 줄 ㅠㅠㅠ 사랑합니다 형님!!!!!'] },
-  { id:'g6', from:'jiyeon', time:'00:30', theme:'letter',
-    brand:'다비도프', name:'쿨워터 맨 오 드 뚜왈렛 125ml', img:'images/gift-davidoff.jpg', emoji:'🌊', tint:'#dbeafe',
-    art:{ ttl:'Happy Birthday', sub:'규상 씨에게', deco:'letter' },
-    letter:'images/letter-jiyeon.jpg',
-    msgs:['규상 씨 생일 축하해요. 이건 사무실 공식 경비 아니고 제 사비예요. 그리고 하나한테 리본 같은 거 알려준 사람 저 아니에요. 진짜 아니에요. 어쩌면 아닐 수도 있어요. 아무튼 하나 울리면 서류에서 규상 씨 수당 누락시킬 거예요 ^^'] },
+    msgs:['형님!!!!!!!!!생신 축하드립니다!! 맛있는 거 많이 드시고 득근하십쇼!!!'] },
+  { id:'g6', from:'mikyung', time:'01:10', theme:'plain',
+    brand:'와인', name:'고급 와인 1병', img:'images/gift-wine.jpg', emoji:'🍷', tint:'#f3e3e6',
+    art:{ ttl:'Happy Birthday', sub:'', deco:'none' },
+    msgs:[] },
   { id:'g7', from:'doctor', time:'00:00', theme:'pink',
     brand:'헬로키티', name:'헬로키티 구급상자 세트 + 하트 반창고 100매', img:'images/gift-hellokitty.jpg', emoji:'🩹', tint:'#ffe0ec',
     art:{ ttl:'HAPPY<br>BIRTHDAY ♡', sub:'규상 오빠', deco:'blood' },
@@ -297,7 +296,7 @@ const DONGSU_CAPTIONS = [
 ];
 
 /* ── 상태 저장 (받기 / 읽음) ── */
-const KEY='gyusang-giftbox-v1';
+const KEY='gyusang-giftbox-v2';
 let state={opened:{},received:{}};
 try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s) state=s; }catch(e){}
 const save=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} };
@@ -350,7 +349,6 @@ function renderTabbar(){
   $('#tabbar').querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{
     const t=b.dataset.t;
     if(t==='gift') go('s-box');
-    else if(t==='chat') toast('💬 명성 캐피탈 (6) — 안 읽은 메시지 312개<br>아직 열어볼 용기가 없다');
     else toast('지금은 선물함만 볼 수 있어요');
   });
 }
@@ -385,7 +383,7 @@ function card(g){
   return `<div class="gcard" data-id="${g.id}">
     <div class="head">${av(g.from,24)}<div class="who"><b>${p.name}</b>님이 보낸 선물${state.opened[g.id]?'':'<span class="newdot"></span>'}</div><div class="date">10.13</div></div>
     <div class="body">${pimg(g)}<div class="info"><div class="brand">${g.brand}</div><div class="pname">${esc(g.name)}</div>
-      <div class="preview">${esc(g.msgs[0])}</div>${tag}</div></div>
+      ${g.msgs.length?`<div class="preview">${esc(g.msgs[0])}</div>`:''}${tag}</div></div>
     <div class="foot"><div class="exp">유효기간 2027.01.13까지</div><div class="btn ${got?'done':''}">${got?'받기 완료':'받기'}</div></div>
   </div>`;
 }
@@ -398,6 +396,7 @@ const decoSVG={
   balloon:`<svg class="deco" viewBox="0 0 350 230"><g opacity=".9"><ellipse cx="45" cy="70" rx="22" ry="27" fill="#fde047"/><path d="M45 97q-6 30 4 60" stroke="#fff" fill="none"/><ellipse cx="305" cy="60" rx="20" ry="25" fill="#f472b6"/><path d="M305 85q8 35-2 70" stroke="#fff" fill="none"/><ellipse cx="320" cy="150" rx="15" ry="19" fill="#a78bfa"/></g></svg>`,
   coffee:`<svg class="deco" viewBox="0 0 350 230"><g fill="none" stroke="#f3efe6" stroke-width="2.5" opacity=".35"><path d="M40 170h40l-5 40H45Z"/><path d="M270 165h40l-5 40h-30Z"/><path d="M52 160c0-8 8-8 8-16M287 155c0-8 8-8 8-16"/></g></svg>`,
   confetti:(()=>{let s='';for(let i=0;i<34;i++){const x=Math.random()*350,y=Math.random()*230,c=['#fff','#fde047','#22d3ee','#a3e635','#f472b6'][i%5];s+=`<rect x="${x}" y="${y}" width="6" height="10" rx="1.5" fill="${c}" transform="rotate(${Math.random()*360} ${x} ${y})" opacity=".85"/>`;}return `<svg class="deco" viewBox="0 0 350 230">${s}</svg>`})(),
+  night:(()=>{let s='';for(let i=0;i<26;i++){const x=Math.random()*350,y=Math.random()*230;s+=`<circle cx="${x}" cy="${y}" r="${(Math.random()*1.6+.6).toFixed(1)}" fill="#fff" opacity="${(Math.random()*.6+.3).toFixed(2)}"/>`;}return `<svg class="deco" viewBox="0 0 350 230">${s}<circle cx="290" cy="55" r="22" fill="#fde68a" opacity=".9"/><circle cx="280" cy="48" r="20" fill="#2a2459"/></svg>`})(),
   letter:`<svg class="deco" viewBox="0 0 350 230"><g transform="translate(262 140) rotate(-10)"><rect x="0" y="0" width="70" height="48" rx="4" fill="#fff"/><path d="M0 2 35 28 70 2" fill="none" stroke="#9db7d8" stroke-width="2"/></g><path d="M40 60q10-14 20 0t20 0" stroke="#24456b" stroke-width="2" fill="none" opacity=".3"/></svg>`,
   blood:`<svg class="deco" viewBox="0 0 350 230"><g fill="#e11d48" opacity=".75"><path d="M20 0h70c0 22-6 30-10 30s-4-12-9-12-4 40-11 40-6-28-12-28-5 14-11 14-9-30-17-44Z"/><circle cx="300" cy="190" r="16"/><circle cx="325" cy="168" r="5"/><circle cx="276" cy="210" r="4"/><circle cx="318" cy="210" r="3"/><path d="M260 0h90v26c-6 0-8 18-14 18s-5-24-12-24-6 50-14 50-6-40-14-40-8 14-14 14-10-30-22-44Z"/></g><g fill="#fff" opacity=".8"><path d="M50 190c-8-8-20 2-10 12l10 9 10-9c10-10-2-20-10-12Z"/><path d="M300 90c-5-5-13 1-7 8l7 6 7-6c6-7-2-13-7-8Z"/></g></svg>`,
 };
@@ -417,7 +416,7 @@ function openDetail(id){
   }
   if(g.letter){
     extra=`<div class="letter" id="letter"><div class="lbl">🖼️ 첨부 사진 1장</div>
-      <img src="${g.letter}" alt="손편지" onerror="this.outerHTML='<div class=&quot;paper&quot;>규상 씨에게<br>생일 축하해요!<br>하나 잘 부탁해요. 진심으로요.<br><span style=&quot;float:right&quot;>- 지연</span></div>';document.getElementById('letter').style.cursor='default'"></div>`;
+      <img src="${g.letter}" alt="손편지" onerror="document.getElementById('letter').remove()"></div>`;
   }
   $('#detailScroll').innerHTML=`
     <div class="cardwrap"><div class="mcard t-${g.theme}">
