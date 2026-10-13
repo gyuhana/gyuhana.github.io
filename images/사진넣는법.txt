@@ -1,0 +1,27 @@
+이 폴더에 아래 이름 그대로 사진을 넣으면 선물함에 자동으로 나와요.
+(사진이 없으면 이모지 그림이 대신 나와요. jpg로 저장해 주세요.)
+
+[프로필 사진]
+profile-me.jpg         윤규상
+profile-hana.jpg       하나
+profile-byungchul.jpg  김병철
+profile-mikyung.jpg    곽미경
+profile-jinho.jpg      박진호
+profile-dongsu.jpg     권동수
+profile-jiyeon.jpg     서지연
+profile-doctor.jpg     닥터
+
+[선물 상품 사진]
+gift-kyochon.jpg       교촌 허니콤보
+gift-jomalone.jpg      조말론 바디워시
+gift-daiso.jpg         다이소 상품권
+gift-starbucks.jpg     스타벅스 아메리카노
+gift-baemin.jpg        배민 상품권
+gift-davidoff.jpg      다비도프 쿨워터
+gift-hellokitty.jpg    헬로키티 구급상자
+
+[첨부 사진]
+letter-jiyeon.jpg      서지연 손편지 사진
+
+[녹음 파일] -> audio 폴더에
+dongsu-song.mp3        권동수 생일축하노래

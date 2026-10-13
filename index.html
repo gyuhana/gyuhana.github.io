@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>규상의 선물함</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap">
+<style>
+:root{
+  --yellow:#FEE500; --ink:#191919; --sub:#8a8a8a; --line:#efefef; --bg:#ffffff; --soft:#f6f6f6;
+  --red:#ff4b3a; --page:#e9e6df;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--page);font-family:Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:var(--ink);display:flex;align-items:center;justify-content:center;letter-spacing:-0.2px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+img{display:block}
+
+/* ── 폰 프레임 ── */
+.phone{position:relative;width:390px;height:844px;background:var(--bg);border-radius:46px;overflow:hidden;overflow:clip;box-shadow:0 0 0 11px #1b1b1b,0 0 0 13px #3a3a3a,0 30px 80px rgba(0,0,0,.35)}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:120px;height:34px;background:#000;border-radius:20px;z-index:50}
+@media (max-width:500px){
+  body{display:block;background:var(--bg)}
+  .phone{width:100%;height:100dvh;border-radius:0;box-shadow:none}
+  .island{display:none}
+}
+.status{position:absolute;top:0;left:0;right:0;height:50px;display:flex;align-items:center;justify-content:space-between;padding:6px 30px 0 34px;font-weight:600;font-size:15px;z-index:40;pointer-events:none}
+.status .r{display:flex;gap:6px;align-items:center}
+@media (max-width:500px){.status{display:none}}
+
+/* ── 화면 전환 ── */
+.screen{position:absolute;inset:0;padding-top:50px;background:var(--bg);display:flex;flex-direction:column;transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+@media (max-width:500px){.screen{padding-top:env(safe-area-inset-top)}}
+.screen.off-right{transform:translateX(100%)}
+.screen.off-left{transform:translateX(-28%)}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+
+.topbar{height:52px;display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0}
+.topbar h1{font-size:21px;font-weight:700;flex:1}
+.topbar h2{font-size:17px;font-weight:600;flex:1;text-align:center}
+.icon-btn{width:34px;height:34px;display:grid;place-items:center;border-radius:50%}
+.icon-btn svg{width:24px;height:24px;stroke:var(--ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* 아바타 */
+.av{border-radius:38%;overflow:hidden;flex-shrink:0;background:#cfd8e3;display:grid;place-items:center;color:#fff;font-weight:700;position:relative}
+.av img{width:100%;height:100%;object-fit:cover}
+
+/* ── 친구 탭 ── */
+.me-row{display:flex;align-items:center;gap:14px;padding:10px 16px 16px}
+.me-row .av{width:62px;height:62px;font-size:24px}
+.me-row .name{font-size:18px;font-weight:700;display:flex;align-items:center;gap:6px}
+.me-row .msg{font-size:13px;color:var(--sub);margin-top:4px}
+.cake-badge{position:absolute;right:-2px;bottom:-2px;width:24px;height:24px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:14px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.bday-banner{margin:0 16px 14px;border-radius:14px;padding:14px 16px;background:linear-gradient(110deg,#fff4b8,#ffe3ec);display:flex;align-items:center;gap:12px;cursor:pointer}
+.bday-banner .t1{font-size:14px;font-weight:700}
+.bday-banner .t2{font-size:12.5px;color:#6b6b6b;margin-top:3px}
+.bday-banner .emo{font-size:30px}
+.sec-title{font-size:12.5px;color:var(--sub);padding:12px 16px 6px;border-top:1px solid var(--line)}
+.f-row{display:flex;align-items:center;gap:12px;padding:8px 16px}
+.f-row .av{width:44px;height:44px;font-size:17px}
+.f-row .name{font-size:15.5px;font-weight:500}
+.f-row .st{font-size:12.5px;color:var(--sub);margin-top:2px}
+
+/* 하단 탭바 */
+.tabbar{height:62px;border-top:1px solid var(--line);display:flex;flex-shrink:0;background:#fff;padding-bottom:4px}
+@media (max-width:500px){.tabbar{height:calc(58px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom)}}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10.5px;color:#9a9a9a;position:relative}
+.tab svg{width:26px;height:26px;stroke:#9a9a9a;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tab.on{color:var(--ink)} .tab.on svg{stroke:var(--ink);fill:var(--ink)}
+.tab.on svg .nofill{fill:none}
+.badge{position:absolute;top:5px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--red);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;animation:blink 1.6s ease-in-out infinite}
+@keyframes blink{50%{transform:scale(1.12);box-shadow:0 0 0 4px rgba(255,75,58,.18)}}
+
+/* ── 선물함 ── */
+.gtabs{display:flex;border-bottom:1px solid var(--line);flex-shrink:0;padding:0 8px}
+.gtab{flex:1;height:44px;font-size:15px;color:var(--sub);font-weight:500;position:relative}
+.gtab.on{color:var(--ink);font-weight:700}
+.gtab.on::after{content:"";position:absolute;left:18%;right:18%;bottom:-1px;height:2.5px;background:var(--ink);border-radius:2px}
+.chips{display:flex;gap:6px;padding:12px 16px 4px;overflow-x:auto;scrollbar-width:none}
+.chip{flex-shrink:0;height:32px;padding:0 13px;border-radius:16px;border:1px solid #e2e2e2;font-size:13px;color:#555}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:600}
+.notice{margin:10px 16px 4px;padding:12px 14px;border-radius:12px;background:var(--soft);font-size:13px;line-height:1.5;display:flex;gap:10px;align-items:flex-start}
+.notice b{font-weight:700}
+
+.gcard{margin:12px 16px 0;border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .12s}
+.gcard:active{transform:scale(.985)}
+.gcard .head{display:flex;align-items:center;gap:8px;padding:12px 14px 0;font-size:13px}
+.gcard .head .av{width:24px;height:24px;font-size:11px}
+.gcard .head .who{flex:1}
+.gcard .head .who b{font-weight:700}
+.gcard .head .date{color:var(--sub);font-size:12px}
+.newdot{width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block;margin-left:4px;vertical-align:middle}
+.gcard .body{display:flex;gap:14px;padding:12px 14px 14px}
+.pimg{width:84px;height:84px;border-radius:12px;overflow:hidden;flex-shrink:0;display:grid;place-items:center;font-size:40px;position:relative}
+.pimg img{width:100%;height:100%;object-fit:cover}
+.gcard .info{flex:1;min-width:0;display:flex;flex-direction:column}
+.brand{font-size:12.5px;color:var(--sub)}
+.pname{font-size:15px;font-weight:600;line-height:1.35;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.preview{font-size:12.5px;color:#666;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gcard .foot{display:flex;border-top:1px solid var(--line)}
+.gcard .foot .exp{flex:1;font-size:12px;color:var(--sub);padding:11px 14px}
+.gcard .foot .btn{padding:0 18px;font-size:13.5px;font-weight:700;background:var(--yellow);display:grid;place-items:center}
+.gcard .foot .btn.done{background:var(--soft);color:#555;font-weight:600}
+.attach-tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#7a5af8;background:#f1edff;padding:2px 7px;border-radius:9px;margin-top:6px;align-self:flex-start}
+
+.empty{padding:90px 30px;text-align:center;color:var(--sub);font-size:14px;line-height:1.6}
+.empty .big{font-size:46px;margin-bottom:12px}
+.empty .cta{margin-top:18px;height:40px;padding:0 18px;border-radius:20px;background:var(--yellow);color:var(--ink);font-weight:700;font-size:14px}
+
+/* ── 상세 ── */
+.cardwrap{padding:6px 18px 0}
+.mcard{border-radius:20px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.08)}
+.mcard .art{height:230px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.mcard .art .ttl{font-weight:800;font-size:26px;letter-spacing:.5px;position:relative;z-index:2;text-align:center;line-height:1.15}
+.mcard .art .sub{font-size:13px;margin-top:8px;position:relative;z-index:2;opacity:.85}
+.mcard .art .deco{position:absolute;inset:0;pointer-events:none}
+.mcard .txt{background:#fff;padding:20px 20px 22px}
+.bubble{font-size:15px;line-height:1.65;white-space:pre-wrap;word-break:keep-all}
+.bubble + .bubble{margin-top:14px;padding-top:14px;border-top:1px dashed #e5e5e5}
+.bubble .addl{display:block;font-size:11.5px;color:var(--sub);margin-bottom:4px}
+.from{margin-top:16px;font-size:13px;color:var(--sub);text-align:right}
+
+.voice{margin:14px 18px 0;border-radius:16px;background:#f4f1ff;padding:14px;display:flex;align-items:center;gap:12px}
+.voice .play{width:44px;height:44px;border-radius:50%;background:#7a5af8;display:grid;place-items:center;flex-shrink:0}
+.voice .play svg{width:18px;height:18px;fill:#fff}
+.voice .meta{flex:1;min-width:0}
+.voice .vt{font-size:13.5px;font-weight:600}
+.wave{display:flex;gap:2px;align-items:center;height:26px;margin-top:6px}
+.wave i{flex:1;background:#cdc2fb;border-radius:2px}
+.wave i.on{background:#7a5af8}
+.voice .time{font-size:12px;color:#7a5af8;font-variant-numeric:tabular-nums;margin-top:2px}
+.caption{margin:8px 18px 0;font-size:12.5px;color:#7a5af8;min-height:18px;text-align:center;font-style:italic}
+
+.letter{margin:14px 18px 0;border-radius:14px;overflow:hidden;border:1px solid var(--line);cursor:zoom-in}
+.letter .lbl{font-size:12px;color:var(--sub);padding:8px 12px;background:var(--soft);display:flex;gap:6px;align-items:center}
+.letter img{width:100%;max-height:340px;object-fit:cover}
+.paper{background:repeating-linear-gradient(#fffdf6 0 31px,#e8e1cf 31px 32px);padding:18px 22px 22px;font-family:"Nanum Pen Script",cursive;font-size:25px;line-height:32px;color:#2b3a67;min-height:200px}
+
+.prod{margin:18px 18px 0;padding:16px 0;border-top:1px solid var(--line);display:flex;gap:14px;align-items:center}
+.prod .pimg{width:72px;height:72px;font-size:34px}
+.kv{margin:0 18px;font-size:13px;color:var(--sub);display:grid;grid-template-columns:72px 1fr;row-gap:8px;padding-bottom:24px}
+.kv b{color:var(--ink);font-weight:500}
+.bottom{padding:10px 16px 14px;border-top:1px solid var(--line);display:flex;gap:8px;flex-shrink:0;background:#fff}
+@media (max-width:500px){.bottom{padding-bottom:calc(14px + env(safe-area-inset-bottom))}}
+.bigbtn{flex:1;height:52px;border-radius:12px;background:var(--yellow);font-size:16px;font-weight:700}
+.bigbtn.gray{background:var(--soft);font-weight:600;flex:0 0 auto;padding:0 18px;font-size:15px}
+
+/* 테마 */
+.t-cake .art{background:#ffd84d;color:#5a3a00}
+.t-plain .art{background:#efe9df;color:#4a4339}
+.t-plain .art .ttl{font-weight:500;font-size:22px;letter-spacing:3px}
+.t-party .art{background:linear-gradient(160deg,#3b82f6,#7dd3fc);color:#fff}
+.t-coffee .art{background:#0b6e4f;color:#f3efe6}
+.t-confetti .art{background:#ff7a59;color:#fff}
+.t-letter .art{background:#dfe9f5;color:#24456b}
+.t-pink .art{background:#ffd6e5;color:#c2185b}
+
+/* 모달/시트/토스트 */
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:60;display:none;align-items:center;justify-content:center}
+.dim.show{display:flex;animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+.modal{width:300px;background:#fff;border-radius:20px;padding:28px 22px 18px;text-align:center;animation:pop .35s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.8);opacity:0}}
+.modal .emo{font-size:54px}
+.modal h3{font-size:18px;margin-top:10px}
+.modal p{font-size:13.5px;color:#666;margin-top:8px;line-height:1.5}
+.modal .bigbtn{width:100%;margin-top:20px;height:48px}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;padding:10px 22px 26px;animation:up .3s cubic-bezier(.2,.8,.2,1);align-self:flex-end}
+@keyframes up{from{transform:translateY(100%)}}
+.grab{width:40px;height:5px;border-radius:3px;background:#ddd;margin:0 auto 16px}
+.coupon{border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center}
+.coupon .brand{font-size:13px}
+.coupon .pname{font-size:16px;-webkit-line-clamp:3}
+.barcode{margin:18px auto 6px;height:76px;display:flex;justify-content:center;gap:0}
+.barcode i{background:#111;height:100%}
+.bnum{font-size:15px;letter-spacing:2.5px;font-variant-numeric:tabular-nums}
+.toast{position:absolute;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:rgba(30,30,30,.92);color:#fff;font-size:13.5px;padding:11px 16px;border-radius:12px;opacity:0;transition:.25s;z-index:80;pointer-events:none;width:max-content;max-width:86%;text-align:center;line-height:1.45}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.viewer{position:absolute;inset:0;background:#000;z-index:90;display:none;align-items:center;justify-content:center}
+.viewer.show{display:flex}
+.viewer img{max-width:100%;max-height:100%}
+.confetti{position:absolute;inset:0;pointer-events:none;z-index:70;overflow:hidden}
+.confetti i{position:absolute;top:-12px;width:8px;height:12px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(900px) rotate(720deg)}}
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+  <div class="island"></div>
+  <div class="status"><span id="clock">7:42</span><span class="r">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 8.9a3.4 3.4 0 0 1 4.8 0L8 11.5ZM3.2 6.5a6.8 6.8 0 0 1 9.6 0l-1.4 1.4a4.8 4.8 0 0 0-6.8 0L3.2 6.5ZM.8 4.1a10.2 10.2 0 0 1 14.4 0l-1.4 1.4a8.2 8.2 0 0 0-11.6 0L.8 4.1Z"/></svg>
+    <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="#000" opacity=".4"/><rect x="2" y="2" width="15" height="9" rx="2"/><rect x="24.5" y="4.5" width="1.5" height="4" rx=".7" opacity=".4"/></svg>
+  </span></div>
+
+  <!-- 친구 탭 -->
+  <section class="screen" id="s-friends">
+    <div class="topbar">
+      <h1>친구</h1>
+      <button class="icon-btn" aria-label="검색"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <button class="icon-btn" aria-label="친구 추가"><svg viewBox="0 0 24 24"><circle cx="10" cy="8" r="4"/><path d="M3 20c0-3.9 3.1-6.5 7-6.5 1.4 0 2.6.3 3.7.9M18 14v6M15 17h6"/></svg></button>
+      <button class="icon-btn" aria-label="설정"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button>
+    </div>
+    <div class="scroll" id="friendsScroll"></div>
+    <nav class="tabbar" id="tabbar"></nav>
+  </section>
+
+  <!-- 선물함 -->
+  <section class="screen off-right" id="s-box">
+    <div class="topbar">
+      <button class="icon-btn" data-back aria-label="뒤로"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button>
+      <h2>선물함</h2>
+      <button class="icon-btn" id="resetBtn" aria-label="처음 상태로"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg></button>
+    </div>
+    <div class="gtabs">
+      <button class="gtab on" data-gtab="recv">받은 선물</button>
+      <button class="gtab" data-gtab="sent">보낸 선물</button>
+      <button class="gtab" data-gtab="wish">위시리스트</button>
+    </div>
+    <div class="scroll" id="boxScroll"></div>
+  </section>
+
+  <!-- 선물 상세 -->
+  <section class="screen off-right" id="s-detail">
+    <div class="topbar">
+      <button class="icon-btn" data-back aria-label="뒤로"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button>
+      <h2>받은 선물</h2>
+      <span style="width:34px"></span>
+    </div>
+    <div class="scroll" id="detailScroll"></div>
+    <div class="bottom" id="detailBottom"></div>
+  </section>
+
+  <div class="dim" id="dim"></div>
+  <div class="viewer" id="viewer"><img alt=""></div>
+  <div class="confetti" id="confetti"></div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ============================================================
+   📷 사진 넣는 법
+   images 폴더에 아래 이름 그대로 사진을 넣으면 자동으로 바뀌어요.
+   사진이 없으면 이모지 그림이 대신 나와요. (jpg가 아니면 아래 경로의 확장자도 바꿔 주세요)
+   ============================================================ */
+const PEOPLE = {
+  me:        { name:'윤규상', img:'images/profile-me.jpg',        color:'#4b5563' },
+  hana:      { name:'하나',   img:'images/profile-hana.jpg',      color:'#f9a8d4', status:'' },
+  byungchul: { name:'김병철', img:'images/profile-byungchul.jpg', color:'#78716c', status:'' },
+  mikyung:   { name:'곽미경', img:'images/profile-mikyung.jpg',   color:'#a8a29e', status:'' },
+  jinho:     { name:'박진호', img:'images/profile-jinho.jpg',     color:'#60a5fa', status:'' },
+  dongsu:    { name:'권동수', img:'images/profile-dongsu.jpg',    color:'#fb923c', status:'' },
+  jiyeon:    { name:'서지연', img:'images/profile-jiyeon.jpg',    color:'#34d399', status:'' },
+  doctor:    { name:'닥터',   img:'images/profile-doctor.jpg',    color:'#f472b6', status:'' },
+};
+
+const GIFTS = [
+  { id:'g1', from:'byungchul', time:'00:00', theme:'cake',
+    brand:'교촌치킨', name:'허니콤보 + 콜라 1.25L', img:'images/gift-kyochon.jpg', emoji:'🍗', tint:'#fff1d6',
+    art:{ ttl:'HAPPY<br>BIRTHDAY', sub:'생일 축하해!', deco:'cake' },
+    msgs:['규상아 생일 축하한다 니 데려온 지 13년이다 씨발 세월 존나 빠르네. 닭 먹고 힘내서 다음 달 실적 빵꾸 내지 마라. 그리고 그 여자애한테 잘해라 형이 다 안다 ㅋㅋ',
+          '아 그리고 콘돔은 니가 사라 그건 형이 못 사준다 쪽팔려서.'] },
+  { id:'g2', from:'mikyung', time:'00:01', theme:'plain',
+    brand:'조 말론 런던', name:'우드 세이지 앤 씨 솔트 바디 앤 핸드 워시 250ml', img:'images/gift-jomalone.jpg', emoji:'🧴', tint:'#f1ece4',
+    art:{ ttl:'Happy Birthday', sub:'', deco:'none' },
+    msgs:['피 냄새 좀 씻고 다녀. 생일 축하해, 규상아.'] },
+  { id:'g3', from:'jinho', time:'00:04', theme:'party',
+    brand:'다이소', name:'모바일 상품권 5,000원', img:'images/gift-daiso.jpg', emoji:'🎫', tint:'#ffe4e6', amount:'5,000원',
+    art:{ ttl:'생일 축하해<br>친구야 🥳', sub:'(진심 아님)', deco:'balloon' },
+    msgs:['수면양말이랑 미끄럼 방지 슬리퍼 또 사라 ㅎㅎ 우리 규상이 이렇게 다정한 남자인 줄 진짜 몰랐어 감동받아서 눈물 남. 생축 친구야. 근데 하나 씨한테 너 코 고는지 아직 대답 못 들음.'] },
+  { id:'g4', from:'jinho', time:'00:09', theme:'coffee',
+    brand:'스타벅스', name:'카페 아메리카노 T 2잔', img:'images/gift-starbucks.jpg', emoji:'☕', tint:'#dcefe6',
+    art:{ ttl:'COFFEE<br>FOR TWO', sub:'둘이 같이', deco:'coffee' },
+    msgs:['하나 씨랑 같이 마셔. 이건 진심.'] },
+  { id:'g5', from:'dongsu', time:'01:47', theme:'confetti',
+    brand:'배달의민족', name:'모바일 상품권 30,000원', img:'images/gift-baemin.jpg', emoji:'🛵', tint:'#d5f5f2', amount:'30,000원',
+    art:{ ttl:'형님!!!<br>생신 축하드립니다!!!', sub:'', deco:'confetti' },
+    voice:{ src:'audio/dongsu-song.mp3', len:167, title:'생일축하노래 (트로트 ver.) 🎤' },
+    msgs:['형님!!!!!!!!! 생신 축하드립니다!!!!!!! 새벽에 차 빼드린 거 비밀로 할게요!!!!! 근데 형님 다음엔 번호판 확인 같은 건 낮에 시켜주십쇼 저 졸려 뒤지는 줄 ㅠㅠㅠ 사랑합니다 형님!!!!!'] },
+  { id:'g6', from:'jiyeon', time:'00:30', theme:'letter',
+    brand:'다비도프', name:'쿨워터 맨 오 드 뚜왈렛 125ml', img:'images/gift-davidoff.jpg', emoji:'🌊', tint:'#dbeafe',
+    art:{ ttl:'Happy Birthday', sub:'규상 씨에게', deco:'letter' },
+    letter:'images/letter-jiyeon.jpg',
+    msgs:['규상 씨 생일 축하해요. 이건 사무실 공식 경비 아니고 제 사비예요. 그리고 하나한테 리본 같은 거 알려준 사람 저 아니에요. 진짜 아니에요. 어쩌면 아닐 수도 있어요. 아무튼 하나 울리면 서류에서 규상 씨 수당 누락시킬 거예요 ^^'] },
+  { id:'g7', from:'doctor', time:'00:00', theme:'pink',
+    brand:'헬로키티', name:'헬로키티 구급상자 세트 + 하트 반창고 100매', img:'images/gift-hellokitty.jpg', emoji:'🩹', tint:'#ffe0ec',
+    art:{ ttl:'HAPPY<br>BIRTHDAY ♡', sub:'규상 오빠', deco:'blood' },
+    msgs:['규상 오빠 생일 축하해요오 ♡ 오빠는 맨날 맞고 다니니까 이거 써요 ㅎㅎ 근데 진호 오빠 생일은 언제예요??? 진짜 몰라서 물어보는 거예요 알려주면 오빠 다음에 뼈 부러졌을 때 마취 공짜로 해줄게요 ♡♡ 안 알려주면 마취 없이 할 거예요 ㅎ'] },
+];
+
+/* 동수 녹음 파일이 없을 때 재생 중에 뜨는 자막 (초, 문구) */
+const DONGSU_CAPTIONS = [
+  [0,'(노래방 에코 웅웅웅)'], [6,'🎵 생일 축하합니다아~ 생일 축하합니다아~'], [30,'🎵 (꺾기) 사랑하는 우리 형니이이임~'],
+  [70,'(마이크 쿵) 형님!!!! 사랑합니다!!!!'], [110,'🎵 생일 축하합니다아아아아~~'], [150,'(멀리서) 닥쳐 이 새끼야'], [160,'(녹음 끝)']
+];
+
+/* ── 상태 저장 (받기 / 읽음) ── */
+const KEY='gyusang-giftbox-v1';
+let state={opened:{},received:{}};
+try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s) state=s; }catch(e){}
+const save=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} };
+
+const $=s=>document.querySelector(s);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function avatar(pid,size){
+  const p=PEOPLE[pid];
+  return `<div class="av" style="width:${size}px;height:${size}px;background:${p.color}">
+    <img src="${p.img}" alt="" onerror="this.remove()"><span style="position:absolute;z-index:-1">${p.name[0]}</span></div>`;
+}
+/* 이미지 없으면 이니셜이 보이게: img가 위에 덮고, 실패하면 제거 */
+function avatarFix(html){ return html.replace('<span style="position:absolute;z-index:-1">','<span style="position:absolute;inset:0;display:grid;place-items:center">').replace('<img ','<img style="position:relative;z-index:1" '); }
+const av=(pid,size)=>avatarFix(avatar(pid,size));
+const pimg=g=>`<div class="pimg" style="background:${g.tint}">${g.emoji}<img src="${g.img}" alt="" style="position:absolute;inset:0" onerror="this.remove()"></div>`;
+
+const unopened=()=>GIFTS.filter(g=>!state.received[g.id]).length;
+const senders=()=>new Set(GIFTS.map(g=>g.from)).size;
+
+/* ── 친구 탭 ── */
+function renderFriends(){
+  const friends=['jinho','byungchul','mikyung','dongsu','jiyeon','doctor'];
+  $('#friendsScroll').innerHTML=`
+    <div class="me-row">
+      <div style="position:relative">${av('me',62)}<div class="cake-badge">🎂</div></div>
+      <div><div class="name">윤규상</div><div class="msg">10월 13일 · 오늘 생일</div></div>
+    </div>
+    <div class="bday-banner" id="goBox">
+      <div class="emo">🎁</div>
+      <div style="flex:1"><div class="t1">규상님, 생일 축하해요!</div>
+      <div class="t2">친구 ${senders()}명이 보낸 선물 ${GIFTS.length}개가 도착했어요</div></div>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><path d="m9 5 7 7-7 7"/></svg>
+    </div>
+    <div class="sec-title">즐겨찾기</div>
+    <div class="f-row">${av('hana',44)}<div><div class="name">하나</div></div></div>
+    <div class="sec-title" style="margin-top:6px">친구 ${friends.length}</div>
+    ${friends.map(id=>`<div class="f-row">${av(id,44)}<div><div class="name">${PEOPLE[id].name}</div>${PEOPLE[id].status?`<div class="st">${esc(PEOPLE[id].status)}</div>`:''}</div></div>`).join('')}
+    <div style="height:20px"></div>`;
+  $('#goBox').onclick=()=>go('s-box');
+}
+function renderTabbar(){
+  const n=unopened();
+  $('#tabbar').innerHTML=`
+    <button class="tab on"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7Z"/></svg>친구</button>
+    <button class="tab" data-t="chat"><svg viewBox="0 0 24 24"><path d="M12 4c5 0 9 3.1 9 7s-4 7-9 7c-.8 0-1.6-.1-2.4-.3L5 20l1-3.6C4.1 15.1 3 13.1 3 11c0-3.9 4-7 9-7Z"/></svg>채팅<span class="badge" style="animation:none">300+</span></button>
+    <button class="tab" data-t="open"><svg viewBox="0 0 24 24"><path d="M7 9h10M7 13h6"/><rect x="3" y="4" width="18" height="15" rx="4"/></svg>오픈채팅</button>
+    <button class="tab" data-t="gift"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="5" rx="1"/><path d="M5 13v7h14v-7M12 8v12M12 8S10.5 3.5 8 4.2C6 4.8 7 8 12 8Zm0 0s1.5-4.5 4-3.8C18 4.8 17 8 12 8Z"/></svg>선물하기${n?`<span class="badge">${n}</span>`:''}</button>
+    <button class="tab" data-t="more"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="18" cy="12" r="1.3"/></svg>더보기</button>`;
+  $('#tabbar').querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{
+    const t=b.dataset.t;
+    if(t==='gift') go('s-box');
+    else if(t==='chat') toast('💬 명성 캐피탈 (6) — 안 읽은 메시지 312개<br>아직 열어볼 용기가 없다');
+    else toast('지금은 선물함만 볼 수 있어요');
+  });
+}
+
+/* ── 선물함 ── */
+let gtab='recv', filter='all';
+function renderBox(){
+  const el=$('#boxScroll');
+  if(gtab==='sent'){
+    el.innerHTML=`<div class="empty"><div class="big">📭</div>보낸 선물이 없어요<br><span style="font-size:12.5px">선물하기를 한 번도 이용한 적이 없어요</span></div>`; return;
+  }
+  if(gtab==='wish'){
+    el.innerHTML=`<div class="empty"><div class="big">🤍</div>위시리스트가 비어 있어요<br><span style="font-size:12.5px">갖고 싶은 건 이미 품에 안고 있으니까</span></div>`; return;
+  }
+  const list=GIFTS.filter(g=> filter==='all' || (filter==='wait'?!state.received[g.id]:state.received[g.id]));
+  const nWait=unopened();
+  el.innerHTML=`
+    <div class="chips">
+      <button class="chip ${filter==='all'?'on':''}" data-f="all">전체 ${GIFTS.length}</button>
+      <button class="chip ${filter==='wait'?'on':''}" data-f="wait">받기 전 ${nWait}</button>
+      <button class="chip ${filter==='done'?'on':''}" data-f="done">받은 선물 ${GIFTS.length-nWait}</button>
+    </div>
+    <div class="notice"><span style="font-size:20px">🎂</span><div><b>10월 13일, 규상님의 생일이에요.</b><br>친구들이 보낸 선물을 받아 보세요.</div></div>
+    ${list.length?list.map(card).join(''):`<div class="empty" style="padding:60px 30px"><div class="big">🎁</div>해당하는 선물이 없어요</div>`}
+    <div style="height:24px"></div>`;
+  el.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{filter=b.dataset.f;renderBox();});
+  el.querySelectorAll('.gcard').forEach(c=>c.onclick=()=>openDetail(c.dataset.id));
+}
+function card(g){
+  const p=PEOPLE[g.from], got=state.received[g.id];
+  const tag=g.voice?`<span class="attach-tag">🎙️ 음성 메시지</span>`:g.letter?`<span class="attach-tag">🖼️ 사진 첨부</span>`:'';
+  return `<div class="gcard" data-id="${g.id}">
+    <div class="head">${av(g.from,24)}<div class="who"><b>${p.name}</b>님이 보낸 선물${state.opened[g.id]?'':'<span class="newdot"></span>'}</div><div class="date">10.13</div></div>
+    <div class="body">${pimg(g)}<div class="info"><div class="brand">${g.brand}</div><div class="pname">${esc(g.name)}</div>
+      <div class="preview">${esc(g.msgs[0])}</div>${tag}</div></div>
+    <div class="foot"><div class="exp">유효기간 2027.01.13까지</div><div class="btn ${got?'done':''}">${got?'받기 완료':'받기'}</div></div>
+  </div>`;
+}
+
+/* ── 상세 ── */
+let cur=null, audio=null, simTimer=null;
+const decoSVG={
+  none:'',
+  cake:`<svg class="deco" viewBox="0 0 350 230"><g fill="#fff" opacity=".55"><circle cx="40" cy="40" r="6"/><circle cx="310" cy="60" r="4"/><circle cx="290" cy="190" r="7"/><circle cx="60" cy="185" r="4"/></g><g transform="translate(275 150)"><rect x="-30" y="0" width="60" height="38" rx="6" fill="#fff"/><rect x="-30" y="0" width="60" height="12" rx="6" fill="#ff8fab"/><rect x="-2" y="-18" width="4" height="18" fill="#7dd3fc"/><path d="M0-30c4 5 4 9 0 11-4-2-4-6 0-11Z" fill="#ff6b35"/></g></svg>`,
+  balloon:`<svg class="deco" viewBox="0 0 350 230"><g opacity=".9"><ellipse cx="45" cy="70" rx="22" ry="27" fill="#fde047"/><path d="M45 97q-6 30 4 60" stroke="#fff" fill="none"/><ellipse cx="305" cy="60" rx="20" ry="25" fill="#f472b6"/><path d="M305 85q8 35-2 70" stroke="#fff" fill="none"/><ellipse cx="320" cy="150" rx="15" ry="19" fill="#a78bfa"/></g></svg>`,
+  coffee:`<svg class="deco" viewBox="0 0 350 230"><g fill="none" stroke="#f3efe6" stroke-width="2.5" opacity=".35"><path d="M40 170h40l-5 40H45Z"/><path d="M270 165h40l-5 40h-30Z"/><path d="M52 160c0-8 8-8 8-16M287 155c0-8 8-8 8-16"/></g></svg>`,
+  confetti:(()=>{let s='';for(let i=0;i<34;i++){const x=Math.random()*350,y=Math.random()*230,c=['#fff','#fde047','#22d3ee','#a3e635','#f472b6'][i%5];s+=`<rect x="${x}" y="${y}" width="6" height="10" rx="1.5" fill="${c}" transform="rotate(${Math.random()*360} ${x} ${y})" opacity=".85"/>`;}return `<svg class="deco" viewBox="0 0 350 230">${s}</svg>`})(),
+  letter:`<svg class="deco" viewBox="0 0 350 230"><g transform="translate(262 140) rotate(-10)"><rect x="0" y="0" width="70" height="48" rx="4" fill="#fff"/><path d="M0 2 35 28 70 2" fill="none" stroke="#9db7d8" stroke-width="2"/></g><path d="M40 60q10-14 20 0t20 0" stroke="#24456b" stroke-width="2" fill="none" opacity=".3"/></svg>`,
+  blood:`<svg class="deco" viewBox="0 0 350 230"><g fill="#e11d48" opacity=".75"><path d="M20 0h70c0 22-6 30-10 30s-4-12-9-12-4 40-11 40-6-28-12-28-5 14-11 14-9-30-17-44Z"/><circle cx="300" cy="190" r="16"/><circle cx="325" cy="168" r="5"/><circle cx="276" cy="210" r="4"/><circle cx="318" cy="210" r="3"/><path d="M260 0h90v26c-6 0-8 18-14 18s-5-24-12-24-6 50-14 50-6-40-14-40-8 14-14 14-10-30-22-44Z"/></g><g fill="#fff" opacity=".8"><path d="M50 190c-8-8-20 2-10 12l10 9 10-9c10-10-2-20-10-12Z"/><path d="M300 90c-5-5-13 1-7 8l7 6 7-6c6-7-2-13-7-8Z"/></g></svg>`,
+};
+function fmt(s){s=Math.max(0,Math.floor(s));return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
+
+function openDetail(id){
+  const g=GIFTS.find(x=>x.id===id); cur=g;
+  state.opened[id]=1; save();
+  const p=PEOPLE[g.from];
+  const msgs=g.msgs.map((m,i)=>`<div class="bubble">${i?'<span class="addl">추가 메시지 · 2분 전</span>':''}${esc(m)}</div>`).join('');
+  let extra='';
+  if(g.voice){
+    const bars=Array.from({length:42},(_,i)=>`<i style="height:${30+Math.abs(Math.sin(i*1.7))*55+Math.random()*15}%"></i>`).join('');
+    extra=`<div class="voice"><button class="play" id="vplay" aria-label="재생"><svg viewBox="0 0 24 24" id="vicon"><path d="M7 4v16l13-8Z"/></svg></button>
+      <div class="meta"><div class="vt">${g.voice.title}</div><div class="wave" id="wave">${bars}</div>
+      <div class="time" id="vtime">0:00 / ${fmt(g.voice.len)}</div></div></div><div class="caption" id="caption"></div>`;
+  }
+  if(g.letter){
+    extra=`<div class="letter" id="letter"><div class="lbl">🖼️ 첨부 사진 1장</div>
+      <img src="${g.letter}" alt="손편지" onerror="this.outerHTML='<div class=&quot;paper&quot;>규상 씨에게<br>생일 축하해요!<br>하나 잘 부탁해요. 진심으로요.<br><span style=&quot;float:right&quot;>- 지연</span></div>';document.getElementById('letter').style.cursor='default'"></div>`;
+  }
+  $('#detailScroll').innerHTML=`
+    <div class="cardwrap"><div class="mcard t-${g.theme}">
+      <div class="art">${decoSVG[g.art.deco]||''}<div class="ttl">${g.art.ttl}</div>${g.art.sub?`<div class="sub">${g.art.sub}</div>`:''}</div>
+      <div class="txt">${msgs}<div class="from">From. ${p.name}</div></div>
+    </div></div>
+    ${extra}
+    <div class="prod">${pimg(g)}<div><div class="brand">${g.brand}</div><div class="pname">${esc(g.name)}</div></div></div>
+    <div class="kv"><span>보낸 사람</span><b>${p.name}</b><span>받은 날짜</span><b>2026.10.13 ${g.time}</b><span>유효기간</span><b>2027.01.13까지</b>${g.amount?`<span>금액</span><b>${g.amount}</b>`:''}</div>`;
+  $('#detailScroll').scrollTop=0;
+  renderBottom();
+  if(g.voice) setupVoice(g);
+  const L=$('#letter'); if(L) L.onclick=()=>{const im=L.querySelector('img'); if(im){$('#viewer img').src=im.src;$('#viewer').classList.add('show');}};
+  go('s-detail');
+}
+function renderBottom(){
+  const g=cur, got=state.received[g.id];
+  $('#detailBottom').innerHTML= got
+    ? `<button class="bigbtn gray" id="thanks">감사 인사</button><button class="bigbtn" id="use">교환권 보기</button>`
+    : `<button class="bigbtn" id="recv">선물 받기</button>`;
+  if(got){ $('#use').onclick=showCoupon; $('#thanks').onclick=()=>toast(`${PEOPLE[g.from].name}님과의 채팅방으로 이동해요<br><span style="opacity:.7">(내일 아침의 규상이 보낼 예정)</span>`); }
+  else $('#recv').onclick=receive;
+}
+function receive(){
+  const g=cur; state.received[g.id]=1; save();
+  burst();
+  openDim(`<div class="modal"><div class="emo">🎁</div><h3>선물을 받았어요!</h3>
+    <p>${PEOPLE[g.from].name}님이 보낸<br><b>${esc(g.name)}</b></p>
+    <button class="bigbtn" id="mok">확인</button></div>`);
+  $('#mok').onclick=closeDim;
+  renderBottom(); renderBox(); renderTabbar();
+}
+function showCoupon(){
+  const g=cur;
+  let seed=[...g.id+g.name].reduce((a,c)=>a*31+c.charCodeAt(0)>>>0,7);
+  const rnd=()=>(seed=(seed*1103515245+12345)>>>0)/4294967296;
+  const bars=Array.from({length:62},(_,i)=>`<i style="width:${1+Math.floor(rnd()*3)}px;margin-right:${1+Math.floor(rnd()*3)}px"></i>`).join('');
+  const num=Array.from({length:12},()=>Math.floor(rnd()*10)).join('').replace(/(\d{4})(?=\d)/g,'$1 ');
+  openDim(`<div class="sheet" onclick="event.stopPropagation()"><div class="grab"></div>
+    <div class="coupon"><div class="brand">${g.brand}</div><div class="pname">${esc(g.name)}</div>
+    <div class="barcode">${bars}</div><div class="bnum">${num}</div>
+    <div style="font-size:12px;color:#8a8a8a;margin-top:10px">유효기간 2027.01.13까지${g.amount?` · 잔액 ${g.amount}`:''}</div></div>
+    <button class="bigbtn" style="width:100%;margin-top:14px" id="sclose">닫기</button></div>`);
+  $('#dim').style.alignItems='flex-end';
+  $('#sclose').onclick=closeDim;
+}
+
+/* 음성 메시지 */
+function setupVoice(g){
+  stopVoice();
+  const bars=[...document.querySelectorAll('#wave i')];
+  let playing=false, t=0, real=false;
+  audio=new Audio(); audio.preload='metadata';
+  audio.addEventListener('loadedmetadata',()=>{real=true; $('#vtime').textContent=`0:00 / ${fmt(audio.duration)}`;});
+  audio.addEventListener('ended',()=>{playing=false;setIcon();});
+  audio.addEventListener('timeupdate',()=>draw(audio.currentTime,audio.duration));
+  audio.src=g.voice.src;
+  function setIcon(){ $('#vicon').innerHTML=playing?'<path d="M7 4h4v16H7zM13 4h4v16h-4z"/>':'<path d="M7 4v16l13-8Z"/>'; }
+  function draw(now,len){
+    const r=now/len; bars.forEach((b,i)=>b.classList.toggle('on',i/bars.length<r));
+    const vt=$('#vtime'); if(vt) vt.textContent=`${fmt(now)} / ${fmt(len)}`;
+    if(!real){ const c=[...DONGSU_CAPTIONS].reverse().find(x=>now>=x[0]); $('#caption').textContent=c?c[1]:''; }
+  }
+  $('#vplay').onclick=()=>{
+    playing=!playing; setIcon();
+    if(real){ playing?audio.play():audio.pause(); return; }
+    if(playing){
+      if(t>=g.voice.len) t=0;
+      simTimer=setInterval(()=>{ t+=1; draw(t,g.voice.len);
+        if(t>=g.voice.len){ clearInterval(simTimer); playing=false; setIcon(); } },1000/6); /* 6배속으로 빨리 넘어가요 */
+    } else clearInterval(simTimer);
+  };
+}
+function stopVoice(){ if(audio){audio.pause();audio=null;} clearInterval(simTimer); }
+
+/* ── 공통 ── */
+const order=['s-friends','s-box','s-detail']; let stack=['s-friends'];
+function go(id){
+  const prev=stack[stack.length-1]; if(prev===id) return;
+  if(id==='s-box') renderBox();
+  document.getElementById(prev).classList.add('off-left');
+  const el=document.getElementById(id); el.classList.remove('off-right','off-left');
+  stack.push(id);
+}
+function back(){
+  if(stack.length<2) return;
+  const cur=stack.pop(); stopVoice();
+  document.getElementById(cur).classList.add('off-right');
+  document.getElementById(stack[stack.length-1]).classList.remove('off-left');
+}
+document.querySelectorAll('[data-back]').forEach(b=>b.onclick=back);
+document.querySelectorAll('[data-gtab]').forEach(b=>b.onclick=()=>{
+  gtab=b.dataset.gtab; document.querySelectorAll('[data-gtab]').forEach(x=>x.classList.toggle('on',x===b)); renderBox();
+});
+$('#resetBtn').onclick=()=>{
+  if(confirm('선물함을 처음 상태(전부 받기 전)로 되돌릴까요?')){ state={opened:{},received:{}}; save(); renderBox(); renderTabbar(); toast('처음 상태로 되돌렸어요'); }
+};
+function openDim(html){ const d=$('#dim'); d.style.alignItems='center'; d.innerHTML=html; d.classList.add('show'); }
+function closeDim(){ $('#dim').classList.remove('show'); }
+$('#dim').onclick=e=>{ if(e.target.id==='dim') closeDim(); };
+$('#viewer').onclick=()=>$('#viewer').classList.remove('show');
+let tt; function toast(h){ const t=$('#toast'); t.innerHTML=h; t.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),2400); }
+function burst(){
+  const c=$('#confetti'); c.innerHTML='';
+  const cols=['#FEE500','#ff8fab','#7dd3fc','#a3e635','#c4b5fd','#ff7a59'];
+  for(let i=0;i<70;i++){ const p=document.createElement('i');
+    p.style.left=Math.random()*100+'%'; p.style.background=cols[i%cols.length];
+    p.style.animationDuration=(1.6+Math.random()*1.4)+'s'; p.style.animationDelay=Math.random()*.4+'s'; c.appendChild(p); }
+  setTimeout(()=>c.innerHTML='',3500);
+}
+
+renderFriends(); renderTabbar();
+</script>
+</body>
+</html>
